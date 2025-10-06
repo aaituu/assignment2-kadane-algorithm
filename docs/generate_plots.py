@@ -12,8 +12,12 @@ os.makedirs('performance-plots', exist_ok=True)
 
 # Read benchmark data
 try:
-    df = pd.read_csv('../data/benchmark_results.csv')
-    
+    df = pd.read_csv('../data/benchmark_results.csv', sep=',')
+    # Convert all numeric columns from string to float
+    for col in df.columns:
+        if col != 'InputSize':
+            df[col] = pd.to_numeric(df[col], errors='coerce')
+
     # Group by input size and calculate mean
     grouped = df.groupby('InputSize').mean().reset_index()
     
